@@ -12,7 +12,7 @@ use std::convert::{AsRef, From};
 use std::fmt;
 use std::hash;
 
-use ArtifactVersion;
+use crate::ArtifactVersion;
 
 const RELEASE_VERSION_INDEX: &str = "5"; // QUALIFIERS index of ""
 

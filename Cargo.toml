@@ -1,16 +1,13 @@
 [package]
-name = "maven-version-rs"
+name = "maven-version"
 version = "0.1.0"
-authors = ["Matthias Schorsch"]
+authors = ["Matthias Schorsch", "Chris West (Faux)"]
 description = "Maven 2/3 Artifact Version Parsers."
-documentation = "https://github.com/mschorsch/maven-version-rs"
-homepage = "https://github.com/mschorsch/maven-version-rs"
-repository = "https://github.com/mschorsch/maven-version-rs"
+repository = "https://github.com/FauxFaux/maven-version-rs"
 keywords = ["maven", "java", "artifact"]
 license = "MIT"
 
-[lib]
-name = "maven_version"
+edition = "2018"
 
 [dependencies]
 

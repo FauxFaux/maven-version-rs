@@ -5,8 +5,8 @@ mod maven2;
 mod maven3;
 
 // public uses
-pub use maven2::Maven2ArtifactVersion;
-pub use maven3::Maven3ArtifactVersion;
+pub use crate::maven2::Maven2ArtifactVersion;
+pub use crate::maven3::Maven3ArtifactVersion;
 
 use std::fmt;
 

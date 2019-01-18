@@ -8,7 +8,7 @@ use std::convert::From;
 use std::fmt;
 use std::hash;
 
-use ArtifactVersion;
+use crate::ArtifactVersion;
 
 #[derive(Debug)]
 pub struct Maven2ArtifactVersion<'a> {
