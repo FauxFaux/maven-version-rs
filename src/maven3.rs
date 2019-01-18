@@ -14,7 +14,7 @@ use std::hash;
 
 use ArtifactVersion;
 
-const RELEASE_VERSION_INDEX: &'static str = "5"; // QUALIFIERS index of ""
+const RELEASE_VERSION_INDEX: &str = "5"; // QUALIFIERS index of ""
 
 // ---------------------------------------
 // Maven3ArtifactVersion
@@ -271,7 +271,7 @@ fn parse_items(version: &str) -> Vec<Item> {
             if index == start_index {
                 items.push(Item::Integer(0));
             } else {
-                let substring: String = chars[start_index..index].into_iter().collect();
+                let substring: String = chars[start_index..index].iter().collect();
                 items.push(parse_item(is_digit, &substring));
             }
             start_index = index + 1;
@@ -279,7 +279,7 @@ fn parse_items(version: &str) -> Vec<Item> {
             if index == start_index {
                 items.push(Item::Integer(0));
             } else {
-                let substring: String = chars[start_index..index].into_iter().collect();
+                let substring: String = chars[start_index..index].iter().collect();
                 items.push(parse_item(is_digit, &substring));
             }
 
@@ -287,7 +287,7 @@ fn parse_items(version: &str) -> Vec<Item> {
             items.push(Item::Minus);
         } else if c.is_digit(10) {
             if !is_digit && index > start_index {
-                let substring: String = chars[start_index..index].into_iter().collect();
+                let substring: String = chars[start_index..index].iter().collect();
                 items.push(to_string_item(substring, true));
 
                 start_index = index;
@@ -296,7 +296,7 @@ fn parse_items(version: &str) -> Vec<Item> {
             is_digit = true;
         } else {
             if is_digit && index > start_index {
-                let substring: String = chars[start_index..index].into_iter().collect();
+                let substring: String = chars[start_index..index].iter().collect();
                 items.push(parse_item(true, substring));
 
                 start_index = index;
@@ -307,7 +307,7 @@ fn parse_items(version: &str) -> Vec<Item> {
     }
 
     if chars.len() > start_index {
-        let substring: String = chars[start_index..].into_iter().collect();
+        let substring: String = chars[start_index..].iter().collect();
         items.push(parse_item(is_digit, substring));
     }
 
@@ -352,7 +352,7 @@ fn normalize(items: &mut Vec<Item>) {
 
     for index in (0..items.len()).rev() {
         if items[index].is_minus() {
-            normalize_sublist(items, (index + 1), start_index + 1);
+            normalize_sublist(items, index + 1, start_index + 1);
             start_index = index;
         }
     }
@@ -448,16 +448,17 @@ mod tests {
         let c1 = new_artifact_version(v1);
         let c2 = new_artifact_version(v2);
 
-        assert!(c1.cmp(&c2) == Ordering::Equal, "expected {} == {}", v1, v2);
-        assert!(c2.cmp(&c1) == Ordering::Equal, "expected {} == {}", v2, v1);
-        assert!(
-            calc_hash(&c1) == calc_hash(&c2),
+        assert_eq!(c1.cmp(&c2), Ordering::Equal, "expected {} == {}", v1, v2);
+        assert_eq!(c2.cmp(&c1), Ordering::Equal, "expected {} == {}", v2, v1);
+        assert_eq!(
+            calc_hash(&c1),
+            calc_hash(&c2),
             "expected same hashcode for {} and {}",
             v1,
             v2
         );
-        assert!(c1 == c2, "expected {} == {}", v1, v2);
-        assert!(c2 == c1, "expected {} == {}", v2, v1);
+        assert_eq!(c1, c2, "expected {} == {}", v1, v2);
+        assert_eq!(c2, c1, "expected {} == {}", v2, v1);
     }
 
     fn check_versions_order(v1: &str, v2: &str) {
