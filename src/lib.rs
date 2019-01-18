@@ -10,7 +10,6 @@ pub use maven3::Maven3ArtifactVersion;
 
 use std::fmt;
 
-pub trait ArtifactVersion : fmt::Debug {
-    
+pub trait ArtifactVersion: fmt::Debug {
     fn version(&self) -> &str;
 }
