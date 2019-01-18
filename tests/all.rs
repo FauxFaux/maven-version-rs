@@ -1,5 +1,4 @@
-extern crate rand;
-extern crate maven_version;
+use std::panic;
 
 use maven_version::Maven3ArtifactVersion as Version;
 
@@ -11,6 +10,14 @@ fn all() {
         .split('\n')
         .map(|s| s.to_string())
         .collect();
+
+    for s in &orig {
+        if let Err(_) = panic::catch_unwind(|| {
+            Version::new(s);
+        }) {
+            panic!("parsing {:?} panicked", s);
+        }
+    }
 
     let mut tested = orig.clone();
     tested.shuffle(&mut rand::thread_rng());
