@@ -132,7 +132,7 @@ fn compare_all_items(first: &[Item], second: &[Item]) -> Ordering {
     Ordering::Equal
 }
 
-fn compare_integer_with(value: u32, item: Option<&Item>) -> Ordering {
+fn compare_integer_with(value: u128, item: Option<&Item>) -> Ordering {
     use self::Item::*;
 
     match item {
@@ -221,7 +221,7 @@ fn make_canonical(items: &[Item]) -> String {
 
 #[derive(Debug)]
 enum Item {
-    Integer(u32),
+    Integer(u128),
     Str(String),
     Minus, // list equivalent
 }
@@ -325,7 +325,7 @@ fn parse_item<T: AsRef<str>>(is_digit: bool, buf: T) -> Item {
 }
 
 fn to_integer_item(value: &str) -> Item {
-    Item::Integer(value.parse::<u32>().unwrap())
+    Item::Integer(value.parse::<u128>().unwrap())
 }
 
 fn to_string_item<T: AsRef<str>>(value: T, followed_by_digit: bool) -> Item {
@@ -348,6 +348,10 @@ fn to_string_item<T: AsRef<str>>(value: T, followed_by_digit: bool) -> Item {
 
 // Splits all items at Item::Minus and normalize
 fn normalize(items: &mut Vec<Item>) {
+    if items.is_empty() {
+        return;
+    }
+
     let mut start_index = items.len() - 1;
 
     for index in (0..items.len()).rev() {
@@ -583,5 +587,15 @@ mod tests {
         check_versions_order(b, a); // classical
         check_versions_order(b, c); // now b < c, but before MNG-5568, we had b > c
         check_versions_order(a, c);
+    }
+
+    #[test]
+    fn test_u32_overflow() {
+        new_artifact_version("2019.08.20-03-05-fccd255f26a2f10d999788710142190db09ac063");
+    }
+
+    #[test]
+    fn test_empty() {
+        new_artifact_version("");
     }
 }
