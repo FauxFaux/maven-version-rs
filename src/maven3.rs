@@ -598,4 +598,11 @@ mod tests {
     fn test_empty() {
         new_artifact_version("");
     }
+
+    #[test]
+    #[ignore]
+    // this fails, as 0.0 is "equal" to "0-RELEASE", which is the upstream interpretation too
+    fn test_bare_release() {
+        check_all_versions_order(&["0-RELEASE", "0.0", "0.0.0", "RELEASE"]);
+    }
 }

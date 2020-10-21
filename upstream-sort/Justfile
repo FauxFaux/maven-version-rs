@@ -1,4 +1,8 @@
+test:
+    mvn test
+
 run: build
     java -Djava.util.Arrays.useLegacyMergeSort=true -jar target/upstream-sort-1.0-SNAPSHOT-jar-with-dependencies.jar ../tests/versions.lst | sponge ../tests/versions.lst
+
 build:
     mvn package
